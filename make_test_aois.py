@@ -1,4 +1,5 @@
 from eo_aoi_tools import *
+import os
 
 aoi_complexity = {
     "SQUARE": {
@@ -47,7 +48,6 @@ def generate_random_shapes_from_dict(input_geojson, shape_type='circle', num_sha
     output_features = []
 
     for _ in range(num_shapes):
-        # Randomly sample a point within the input boundary for each shape
 
         # Generate shapes for all options based on the shape type
         if shape_type.lower() == 'circle':
@@ -115,9 +115,9 @@ def generate_random_shapes_from_dict(input_geojson, shape_type='circle', num_sha
 
     # Create feature collection
     output_data = geojson.FeatureCollection(output_features)
-
+    file_name_without_extension = os.path.splitext(os.path.basename(input_geojson))[0]
     # Save output file
-    output_file = f"random_{shape_type}s_in_boundary.geojson"
+    output_file = f"random_{shape_type}s_in_boundary_{file_name_without_extension}.geojson"
     with open(output_file, "w") as f:
         geojson.dump(output_data, f)
 
@@ -125,7 +125,20 @@ def generate_random_shapes_from_dict(input_geojson, shape_type='circle', num_sha
     return output_file
 
 
-generate_random_shapes_from_dict(input_geojson='boundaries.geojson',shape_type='circle',complexity_dict=aoi_complexity)
-generate_random_shapes_from_dict(input_geojson='boundaries.geojson',shape_type='square',complexity_dict=aoi_complexity)
 
+
+# directory = '/Users/fiodor/Documents/Orbify/orbifyinc/geo-tools/inputs'
+#
+#
+# for name in os.listdir(directory):
+#
+#     file_path = os.path.join(directory, name)
+#
+#
+#     if os.path.isfile(file_path):
+#         generate_random_shapes_from_dict(input_geojson=file_path, shape_type='circle',num_shapes=5, complexity_dict=aoi_complexity)
+#         generate_random_shapes_from_dict(input_geojson=file_path, shape_type='square', complexity_dict=aoi_complexity)
+#
+
+generate_random_shapes_from_dict(input_geojson='/Users/fiodor/Documents/Orbify/orbifyinc/geo-tools/inputs/79.geojson', shape_type='circle',num_shapes=2, complexity_dict=aoi_complexity)
 
